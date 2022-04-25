@@ -5,10 +5,16 @@ from .forms import Pago  # form que creamos
 from .models import cliente
 import decimal
 
+# para utilizar el decorador de ATOMIC
+from django.db import transaction
+
 # Create your views here.
 
 
-
+@transaction.atomic
+# para poder hacer ATOMIC las transacciones
+# Hace como un borrador de todas las querys en .save() y 
+# si una no funciona de manera correcta NO se hace ninguna
 def procesador_pagos(request):
     # form = Pago()
     # context = {
