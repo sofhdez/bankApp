@@ -3,6 +3,7 @@ from unicodedata import decimal
 from django.shortcuts import render
 from .forms import Pago  # form que creamos
 from .models import cliente
+import decimal
 
 # Create your views here.
 
@@ -24,15 +25,15 @@ def procesador_pagos(request):
             recibe_nombre = form.cleaned_data['recibe']  # nombre de quien recibe
             monto_data = decimal.Decimal(form.cleaned_data['monto'])  # monto en decimales
             
-            envia_persona = cliente.get(nombre=envia_nombre)
+            envia_persona = cliente.objects.get(nombre=envia_nombre)
             envia_persona.saldo -= monto_data  # se le RESTA el monto a lo que tiene
             envia_persona.save()
             
-            recibe_persona = cliente.get(nombre=recibe_nombre)
+            recibe_persona = cliente.objects.get(nombre=recibe_nombre)
             recibe_persona.saldo += monto_data  # se le SUMA el monto a lo que tiene
             recibe_persona.save()
             
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('bankApp')
     else:
         form = Pago()
     
